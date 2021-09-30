@@ -83,13 +83,21 @@ const usuarioPost = async (req = request, res = response) => {
 
 const usuarioDelete = async (req, res = response) => {
     const {id} = req.params;
+
+    //ESTE UID nos lo indica el midleware que valida el JWT
+    const uid = req.uid;
+
+    const usuarioAutenticado = req.usuarioAutenticado;
+
+
+
     //BORRADO FISICO
     //const usuario = await Usuario.findByIdAndDelete(id);
 
     const usuario = await Usuario.findByIdAndUpdate(id, {estado: false});
 
 
-
+//, uid, usuarioAutenticado
     res.status(200).json(usuario);
 }
 

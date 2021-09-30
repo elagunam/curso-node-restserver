@@ -34,7 +34,8 @@ const UsuarioSchema = Schema({
 //SE USA FUNCJON NORMAL PARA MODER USAR THIS
 UsuarioSchema.methods.toJSON = function (){
     //QUITAMOS A VERSION Y LA CONTRASEÑA DEL MODELO PARA NO IMPRIMIRLOS, INDICAMOS QUE TODO LO DEMAS LO INCLUY ACOMO UN OBJETO USER
-    const {__v, password, ...user} = this.toObject();
+    const {__v, password, _id,...user} = this.toObject();
+    user.uid = _id;
     return user;
 }
 

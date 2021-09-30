@@ -3,7 +3,11 @@ const { check } = require('express-validator');
 const { usuariosGet, usuariosPut, usuarioPost, usuarioDelete, usuarioPatch } = require('../controllers/user.controller');
 const { esRoleValido, isEmailValid, existeUsuarioPorId} = require('../helpers/db-validators');
 
-const {validarCampos} = require('../middlewares/validar-campos');
+/*const {validarCampos} = require('../middlewares/validar-campos');
+const  {validarJWT} = require('../middlewares/validar-jwt');
+const { esAdminrole, tieneRol } = require('../middlewares/validar-roles');*/
+//Importamos los middleware de nuesto indexjs, de esta manera mas simple, para evitar multiples imports de esta direccion
+const {validarCampos, validarJWT, esAdminrole, tieneRol}  = require('../middlewares')
 
 
 const router = Router();
@@ -30,6 +34,9 @@ router.post('/', [
 ], usuarioPost);
 
 router.delete('/:id', [
+    validarJWT,
+    //esAdminrole,
+    tieneRol('ADMIN_ROLE', 'VENTAS_ROLE'),
     check('id', 'No es un ID valido').isMongoId(),
     check('id').custom(existeUsuarioPorId),
     validarCampos

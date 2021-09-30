@@ -8,6 +8,7 @@ class Server{
         this.app = express();
         this.port = process.env.PORT;
         this.usuariosRoutePath = '/api/usuarios';
+        this.authPath = '/api/auth';
 
         //Conectar a base de datos
         this.conectarDB();
@@ -40,6 +41,7 @@ class Server{
 
     routes(){
         this.app.use(this.usuariosRoutePath, require('../routes/user.routes'));
+        this.app.use(this.authPath, require('../routes/auth.routes'));
        /* this.app.get('/api',  (req, res) => {
             res.status(200).json({
                 msg: 'Peticion GET APi'
