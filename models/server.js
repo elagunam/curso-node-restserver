@@ -7,8 +7,17 @@ class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.usuariosRoutePath = '/api/usuarios';
-        this.authPath = '/api/auth';
+        this.paths = {
+            auth: '/api/auth',
+            usuarios: '/api/usuarios',
+            categorias: '/api/categorias',
+            productos: '/api/productos',
+            buscar: '/api/buscar',
+        }
+
+
+        //this.usuariosRoutePath = '/api/usuarios';
+        //this.authPath = '/api/auth';
 
         //Conectar a base de datos
         this.conectarDB();
@@ -40,8 +49,13 @@ class Server{
     }
 
     routes(){
-        this.app.use(this.usuariosRoutePath, require('../routes/user.routes'));
-        this.app.use(this.authPath, require('../routes/auth.routes'));
+        //this.app.use(this.usuariosRoutePath, require('../routes/user.routes'));
+        this.app.use(this.paths.usuarios, require('../routes/user.routes'));
+        //this.app.use(this.authPath, require('../routes/auth.routes'));
+        this.app.use(this.paths.auth, require('../routes/auth.routes'));
+        this.app.use(this.paths.categorias, require('../routes/categoria.routes'));
+        this.app.use(this.paths.productos, require('../routes/productos.routes'));
+        this.app.use(this.paths.buscar, require('../routes/buscar.routes'));
        /* this.app.get('/api',  (req, res) => {
             res.status(200).json({
                 msg: 'Peticion GET APi'
