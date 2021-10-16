@@ -1,6 +1,7 @@
 const express = require('express');
 var cors = require('cors');
 const { dbConnection } = require('../database/config');
+const fileUpload = require('express-fileupload');
 
 class Server{
 
@@ -13,6 +14,7 @@ class Server{
             categorias: '/api/categorias',
             productos: '/api/productos',
             buscar: '/api/buscar',
+            uploads: '/api/uploads',
         }
 
 
@@ -43,9 +45,20 @@ class Server{
         //CON ESTO TODO LA INFORMACION RECIVIDA Y LA TRANSFORMA EN JSON
         this.app.use(express.json());
 
-
+        
         //DIRECTORIO PUBLICO
         this.app.use(express.static('public'));
+
+
+        //CARGA DE ARCHIVOS
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+        }));
+
+
+
     }
 
     routes(){
@@ -56,6 +69,7 @@ class Server{
         this.app.use(this.paths.categorias, require('../routes/categoria.routes'));
         this.app.use(this.paths.productos, require('../routes/productos.routes'));
         this.app.use(this.paths.buscar, require('../routes/buscar.routes'));
+        this.app.use(this.paths.uploads, require('../routes/uploads.routes'));
        /* this.app.get('/api',  (req, res) => {
             res.status(200).json({
                 msg: 'Peticion GET APi'
